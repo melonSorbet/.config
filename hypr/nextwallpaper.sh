@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+
 DIR="$HOME/.config/hypr/wallpapers"
 STATE="$HOME/.cache/hyprpaper_index"
 MONITOR="DP-1"
@@ -39,6 +40,7 @@ sed -i "s/^decoration:focused_border = .*/decoration:focused_border = $FOCUSED/"
 sed -i "s/^decoration:inactive_border = .*/decoration:inactive_border = $INACTIVE/" "$HYPRCONF"
 sed -i "s/^general:background_color = .*/general:background_color = $BACKGROUND/" "$HYPRCONF"
 
+$HOME/.config/wofi/wofi-wal.sh
 # Reload Hyprland to apply new border/background colors
 hyprctl reload
 
