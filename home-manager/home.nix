@@ -107,6 +107,7 @@ programs.alacritty = {
     env = {
       WINIT_UNIX_BACKEND = "wayland";
     };
+    colors.transparent_background_colors = true;
   };
 };
 
