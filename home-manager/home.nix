@@ -191,38 +191,34 @@ set -g status-style 'bg=colour234 fg=colour223'
 };  
   
   
-  xdg.dataFile = {
-    "applications/proton.desktop".text = ''
-      [Desktop Entry]
-      Version=1.1
-      Name=ProtonVPN
-      Comment=ProtonVPN GUI (using nixGL)
-      Exec=nixGL protonvpn-gui
-      Terminal=false
-      Type=Application
-      StartupNotify=true
-      NoDisplay=false
-      MimeType=application/x-terminal-emulator;
-    '';
-  };
+  
+xdg.dataFile = {
+  "applications/proton.desktop".text = ''
+    [Desktop Entry]
+    Version=1.1
+    Name=ProtonVPN
+    Comment=ProtonVPN GUI (using nixGL)
+    Exec=/bin/sh -c "nixGL protonvpn-app"
+    Terminal=false
+    Type=Application
+    StartupNotify=true
+    NoDisplay=false
+  '';
 
-  xdg.dataFile = {
-    "applications/alacritty.desktop".text = ''
-      [Desktop Entry]
-      Version=1.1
-      Name=Alacritty
-      Comment=Alacritty Terminal Emulator (nixGL)
-      Exec=nixGL alacritty
-      Icon=Alacritty
-      Terminal=false
-      Type=Application
-      Categories=Utility;TerminalEmulator;
-      StartupNotify=true
-      NoDisplay=false
-      MimeType=application/x-terminal-emulator;
-    '';
-  };
-
+  "applications/alacritty.desktop".text = ''
+    [Desktop Entry]
+    Version=1.1
+    Name=Alacritty
+    Comment=Alacritty Terminal Emulator (nixGL)
+    Exec=/bin/sh -c "nixGL alacritty"
+    Icon=Alacritty
+    Terminal=false
+    Type=Application
+    Categories=Utility;TerminalEmulator;
+    StartupNotify=true
+    NoDisplay=false
+  '';
+};
   programs.git = {
     enable = true;
     settings = {

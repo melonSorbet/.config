@@ -46,4 +46,5 @@ hyprctl reload
 
 # Save new index
 echo "$next" > "$STATE"
-
+tmux source-file ~/.config/tmux/tmux.conf
+tmux refresh-client
