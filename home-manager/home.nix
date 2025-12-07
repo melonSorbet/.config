@@ -41,7 +41,7 @@ in
     waybar
     hyprsunset
     hyprland-qtutils
-
+    swaynotificationcenter
     # tools
     inotify-tools
 
@@ -92,7 +92,9 @@ programs.alacritty = {
     general.import = [
       "~/.cache/wal/colors-alacritty.toml"
     ];
-    window.opacity = 0.95;
+
+    window.opacity = 0.992;
+    window.blur = false;
     font.normal = {
       family = "JetbrainsMono NerdFont";
       style = "Normal";
@@ -108,6 +110,7 @@ programs.alacritty = {
       WINIT_UNIX_BACKEND = "wayland";
     };
     colors.transparent_background_colors = true;
+    colors.cursor.text = "0x1f1f28";
   };
 };
 
