@@ -1,9 +1,8 @@
 #!/usr/bin/env bash
 
-
 DIR="$HOME/.config/hypr/wallpapers"
 STATE="$HOME/.cache/hyprpaper_index"
-MONITOR="DP-1"
+MONITOR=hyprctl monitors -j | jq -r ''
 HYPRCONF="$HOME/.config/hypr/hyprland.conf"
 
 # Build an array of image files
@@ -28,8 +27,15 @@ hyprctl hyprpaper wallpaper "$MONITOR","$wall"
 
 # Apply wal to generate color palette
 wal -i "$wall"
-wal -i -o --saturate 4.0 "$wall"
+# (Optional) If you want extra saturation, uncomment the next line:
+# wal -i -o --saturate 4.0 "$wall"
+
+# Update Pywalfox (Browser)
 pywalfox update
+
+# Reload SwayNC (Notifications) to apply new colors
+swaync-client -rs
+
 # Optional: update Hyprland window borders and background
 FOCUSED=$(jq -r '.colors.color4' ~/.cache/wal/colors.json)
 INACTIVE=$(jq -r '.colors.color7' ~/.cache/wal/colors.json)
@@ -40,11 +46,15 @@ sed -i "s/^decoration:focused_border = .*/decoration:focused_border = $FOCUSED/"
 sed -i "s/^decoration:inactive_border = .*/decoration:inactive_border = $INACTIVE/" "$HYPRCONF"
 sed -i "s/^general:background_color = .*/general:background_color = $BACKGROUND/" "$HYPRCONF"
 
+# Update Wofi
 $HOME/.config/wofi/wofi-wal.sh
+
 # Reload Hyprland to apply new border/background colors
 hyprctl reload
 
 # Save new index
 echo "$next" > "$STATE"
+
+# Reload Tmux
 tmux source-file ~/.config/tmux/tmux.conf
 tmux refresh-client
