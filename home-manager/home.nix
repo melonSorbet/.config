@@ -1,5 +1,9 @@
 { config, pkgs, ... }:
 let
+    unfreepkgs= import <nixpkgs> {
+    system = builtins.currentSystem;
+    config = { allowUnfree = true; };
+  };
     nixgl = import (builtins.fetchTarball "https://github.com/nix-community/nixGL/archive/main.tar.gz") {};
 in
 {
@@ -41,6 +45,8 @@ in
     waybar
     hyprsunset
     hyprland-qtutils
+    hyprlock
+    hyprcursor
     swaynotificationcenter
     # tools
     inotify-tools
@@ -50,7 +56,10 @@ in
     pipes
 
     protonvpn-gui
-  ];
+  ] ++ 
+    (with unfreepkgs; [
+  obsidian
+]);
 
   programs.zoxide.enable = true;
   programs.zoxide.enableZshIntegration = true;
@@ -82,9 +91,6 @@ in
     history.size = 10000;
   };
 
-  
-
-
 
 programs.alacritty = {
   enable = true;
@@ -93,6 +99,7 @@ programs.alacritty = {
       "~/.cache/wal/colors-alacritty.toml"
     ];
 
+    scrolling.history = 10000;  # increase buffer
     window.opacity = 0.992;
     window.blur = false;
     font.normal = {
@@ -102,10 +109,15 @@ programs.alacritty = {
     font.bold = {
       family = "JetbrainsMono NerdFont";
     };
+    font.italic = {
+      family = "JetbrainsMono NerdFont";
+
+    };
     terminal.shell = {
       program = "${pkgs.zsh}/bin/zsh";
       args = [ "--login" ];
     };
+   
     env = {
       WINIT_UNIX_BACKEND = "wayland";
     };
@@ -159,15 +171,15 @@ programs.tmux = {
 
 
 
-set -g window-style 'bg=default'
-set -g window-active-style 'bg=default'
+    set -g window-style 'bg=default'
+    set -g window-active-style 'bg=default'
 
-# Keep Kanagawa bar (assumes plugin is loaded)
-set -g status on
-set -g status-style 'bg=colour234 fg=colour223'
+    # Keep Kanagawa bar (assumes plugin is loaded)
+    set -g status on
+    set -g status-style 'bg=colour234 fg=colour223'
 
-# Or pure default bar colors (but still Kanagawa-like)
-# set -g status-style 'bg=default fg=default'
+    # Or pure default bar colors (but still Kanagawa-like)
+    # set -g status-style 'bg=default fg=default'
   '';
   
   plugins = with pkgs.tmuxPlugins; [
@@ -218,6 +230,19 @@ xdg.dataFile = {
     Terminal=false
     Type=Application
     Categories=Utility;TerminalEmulator;
+    StartupNotify=true
+    NoDisplay=false
+  '';
+
+  "applications/obsidian.desktop".text = ''
+    [Desktop Entry]
+    Version=1.1
+    Name=Obsidian
+    Comment=Alacritty Terminal Emulator (nixGL)
+    Exec=/bin/sh -c "nixGL obsidian"
+    Icon=Obsidian
+    Terminal=false
+    Type=Application
     StartupNotify=true
     NoDisplay=false
   '';
