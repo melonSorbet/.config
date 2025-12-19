@@ -1,16 +1,36 @@
+/* Import Pywal Colors */
+/* Ensure you have run 'wal' so this file exists. 
+   We use colors-waybar.css because it formats colors as @define-color, which GTK needs. */
+@import url("../../.cache/wal/colors-waybar.css");
+
+@define-color cc-bg alpha(@background, 0.7);
+@define-color noti-border-color alpha(@foreground, 0.15);
+@define-color noti-bg alpha(@background, 1.0);
+@define-color noti-bg-opaque @background;
+@define-color noti-bg-darker @color0;
+@define-color noti-bg-hover @color8;
+@define-color noti-bg-focus alpha(@color8, 0.6);
+@define-color noti-close-bg alpha(@foreground, 0.1);
+@define-color noti-close-bg-hover alpha(@foreground, 0.15);
+@define-color text-color @foreground;
+@define-color text-color-disabled alpha(@foreground, 0.5);
+@define-color bg-selected @color4;
+
 :root {
-	--cc-bg: rgba(46, 46, 46, 0.7);
-	--noti-border-color: rgba(255, 255, 255, 0.15);
-	--noti-bg: 38, 38, 38;
-	--noti-bg-alpha: 0.95;
-	--noti-bg-darker: rgb(38, 38, 38);
-	--noti-bg-hover: rgb(56, 56, 56);
-	--noti-bg-focus: rgba(68, 68, 68, 0.6);
-	--noti-close-bg: rgb(78, 78, 78);
-	--noti-close-bg-hover: rgb(94, 94, 94rgba(68, 68, 68, 0.6));
-	--text-color: rgb(255, 255, 255);
-	--text-color-disabled: rgb(150, 150, 150);
-	--bg-selected: rgb(0, 128, 255);
+	--cc-bg: @cc-bg;
+	--noti-border-color: @noti-border-color;
+	--noti-bg: @noti-bg;
+	--noti-bg-opaque: @noti-bg-opaque;
+	--noti-bg-darker: @noti-bg-darker;
+	--noti-bg-hover: @noti-bg-hover;
+	--noti-bg-focus: @noti-bg-focus;
+	--noti-close-bg: @noti-close-bg;
+	--noti-close-bg-hover: @noti-close-bg-hover;
+	--text-color: @text-color;
+	--text-color-disabled: @text-color-disabled;
+	--bg-selected: @bg-selected;
+
+	/* Sizing Variables */
 	--notification-icon-size: 64px;
 	--notification-app-icon-size: calc(var(--notification-icon-size) / 3);
 	--notification-group-icon-size: 32px;
@@ -20,28 +40,13 @@
 		0 1px 3px 1px rgba(0, 0, 0, 0.7), 0 2px 6px 2px rgba(0, 0, 0, 0.3);
 	--font-size-body: 15px;
 	--font-size-summary: 16px;
-	/* Deprecated variables (because of their typos). Keeeping them around for backwards compatibility. */
+
+	/* Transitions */
 	--hover-tranistion: background 0.15s ease-in-out;
 	--group-collapse-tranistion: opacity 400ms ease-in-out;
 	--hover-transition: var(--hover-tranistion);
 	--group-collapse-transition: var(--group-collapse-tranistion);
 }
-
-/* Fallback for older CSS themes */
-/* Fallback for older CSS themes */
-@define-color cc-bg rgba(46, 46, 46, 0.7);
-@define-color noti-border-color rgba(255, 255, 255, 0.15);
-@define-color noti-bg rgba(48, 48, 48, 0.8);
-@define-color noti-bg-opaque rgb(48, 48, 48);
-@define-color noti-bg-darker rgb(38, 38, 38);
-@define-color noti-bg-hover rgb(56, 56, 56);
-@define-color noti-bg-hover-opaque rgb(56, 56, 56);
-@define-color noti-bg-focus rgba(68, 68, 68, 0.6);
-@define-color noti-close-bg rgba(255, 255, 255, 0.1);
-@define-color noti-close-bg-hover rgba(255, 255, 255, 0.15);
-@define-color text-color rgb(255, 255, 255);
-@define-color text-color-disabled rgb(150, 150, 150);
-@define-color bg-selected rgb(0, 128, 255);
 
 notificationwindow,
 blankwindow,
@@ -86,11 +91,10 @@ blankwindow {
 
 .notification-row .notification-background .notification {
 	/* The actual notification */
-	/* border-radius: var(--border-radius);
-  border: var(--border); */
 	padding: 0;
 	transition: var(--hover-tranistion);
-	background: rgba(var(--noti-bg), var(--noti-bg-alpha));
+	/* Using the color defined in :root which pulls from pywal */
+	background: var(--noti-bg);
 }
 
 .notification-row .notification-background .notification.low {
@@ -103,6 +107,8 @@ blankwindow {
 
 .notification-row .notification-background .notification.critical {
 	/* Critical Priority Notification */
+	background: alpha(@color1, 0.8);
+	/* Red/Urgent from Pywal */
 }
 
 .notification-row .notification-background .notification .notification-default-action {
@@ -139,7 +145,6 @@ blankwindow {
 	-gtk-icon-filter: none;
 	-gtk-icon-size: var(--notification-icon-size);
 	border-radius: 100px;
-	/* Size in px */
 	margin: 4px;
 }
 
@@ -152,7 +157,6 @@ blankwindow {
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .text-box label {
-	/* Fixes base GTK 4 CSS setting a filter of opacity 50% for some odd reason */
 	filter: none;
 }
 
@@ -188,19 +192,27 @@ blankwindow {
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content progressbar {
-	/* The optional notification progress bar */
 	margin-top: 4px;
 }
 
+/* Fix progressbar styling to match pywal */
+progressbar trough {
+	background: @color0;
+	border-radius: var(--border-radius);
+}
+
+progressbar progress {
+	background: @color4;
+	border-radius: var(--border-radius);
+}
+
 .notification-row .notification-background .notification .notification-default-action .notification-content .body-image {
-	/* The "extra" optional bottom notification image */
 	margin-top: 4px;
-	background-color: white;
+	background-color: @foreground;
 	-gtk-icon-filter: none;
 }
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .inline-reply {
-	/* The inline reply section */
 	margin-top: 4px;
 }
 
@@ -214,7 +226,7 @@ blankwindow {
 
 .notification-row .notification-background .notification .notification-default-action .notification-content .inline-reply .inline-reply-button {
 	margin-left: 4px;
-	background: rgba(var(--noti-bg), var(--noti-bg-alpha));
+	background: var(--noti-bg);
 	border: var(--border);
 	border-radius: var(--border-radius);
 	color: var(--text-color);
@@ -239,7 +251,6 @@ blankwindow {
 }
 
 .notification-row .notification-background .notification .notification-action {
-	/* The alternative actions below the default action */
 	margin: 4px;
 	padding: 0;
 }
@@ -247,28 +258,19 @@ blankwindow {
 .notification-row .notification-background .notification .notification-action>button {
 	border-radius: var(--border-radius);
 	color: var(--text-color);
+	background: @color0;
+}
+
+.notification-row .notification-background .notification .notification-action>button:hover {
+	background: var(--noti-bg-hover);
 }
 
 .notification-group {
-	/* Styling only for Grouped Notifications */
 	transition: opacity 200ms ease-in-out;
-	/* The groups close button */
 }
 
 .notification-group:focus {
 	background: var(--noti-bg-focus);
-}
-
-.notification-group.low {
-	/* Low Priority Group */
-}
-
-.notification-group.normal {
-	/* Low Priority Group */
-}
-
-.notification-group.critical {
-	/* Low Priority Group */
 }
 
 .notification-group .notification-group-close-button .close-button {
@@ -281,10 +283,6 @@ blankwindow {
 	color: var(--text-color);
 }
 
-.notification-group .notification-group-headers {
-	/* Notification Group Headers */
-}
-
 .notification-group .notification-group-headers .notification-group-icon {
 	color: var(--text-color);
 	-gtk-icon-size: var(--notification-group-icon-size);
@@ -294,25 +292,12 @@ blankwindow {
 	color: var(--text-color);
 }
 
-.notification-group .notification-group-buttons {
-	/* Notification Group Buttons */
-}
-
-.notification-group.collapsed {
-	/* When another group is expanded, lower the opacity of the collapsed ones */
-}
-
 .notification-group.collapsed.not-expanded {
 	opacity: 0.4;
 }
 
 .notification-group.collapsed .notification-row .notification {
-	background-color: rgba(var(--noti-bg), 1);
-}
-
-.notification-group.collapsed .notification-row:not(:last-child) {
-	/* Top notification in stack */
-	/* Set lower stacked notifications opacity to 0 */
+	background-color: var(--noti-bg-opaque);
 }
 
 .notification-group.collapsed .notification-row:not(:last-child) .notification-action,
@@ -333,12 +318,10 @@ blankwindow {
 }
 
 .control-center .control-center-list-placeholder {
-	/* The placeholder when there are no notifications */
 	opacity: 0.5;
 }
 
 .control-center .control-center-list {
-	/* List of notifications */
 	background: transparent;
 }
 
@@ -356,7 +339,6 @@ blankwindow {
 	background-color: var(--noti-bg-hover);
 }
 
-/* --- Remove grey slab/shadow around notifications inside Control Center --- */
 .control-center .control-center-list .notification-group,
 .control-center .control-center-list .notification-group .notification-row,
 .control-center .control-center-list .notification-group .notification-background {
@@ -366,7 +348,6 @@ blankwindow {
 }
 
 .blank-window {
-	/* Window behind control center and on all other monitors */
 	background: transparent;
 }
 
@@ -385,7 +366,6 @@ blankwindow {
 	border-radius: var(--border-radius);
 }
 
-/* Title widget */
 .widget-title>label {
 	margin-right: 8px;
 	font-size: 1.5rem;
@@ -394,9 +374,14 @@ blankwindow {
 .widget-title>button {
 	margin-left: 8px;
 	border-radius: var(--border-radius);
+	background: @color0;
+	color: @foreground;
 }
 
-/* DND widget */
+.widget-title>button:hover {
+	background: @color1;
+}
+
 .widget-dnd label {
 	color: var(--text-color);
 	margin-right: 8px;
@@ -412,28 +397,29 @@ blankwindow {
 	border-radius: var(--border-radius);
 }
 
+/* DND Switch Colors */
+.widget-dnd switch:checked {
+	background: @color4;
+}
+
+.widget-dnd switch:checked slider {
+	background: @foreground;
+}
+
 /* Label widget */
 .widget-label>label {
 	font-size: 1.1rem;
 }
 
 /* Mpris widget */
-:root {
-	--mpris-album-art-overlay: rgba(0, 0, 0, 0.55);
-	--mpris-button-hover: rgba(0, 0, 0, 0.5);
-	--mpris-album-art-icon-size: 96px;
-	--mpris-album-art-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
-}
-
 .widget-mpris {
 	padding: 0;
-	/* The parent to all players */
 }
 
 .widget-mpris .widget-mpris-player {
 	margin: 16px 20px;
 	border-radius: var(--border-radius);
-	box-shadow: var(--mpris-album-art-shadow);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
 }
 
 .widget-mpris .widget-mpris-player .mpris-background {
@@ -442,18 +428,18 @@ blankwindow {
 
 .widget-mpris .widget-mpris-player .mpris-overlay {
 	padding: 16px;
-	background-color: var(--mpris-album-art-overlay);
+	/* Use pywal background for overlay, but keep it transparent */
+	background-color: alpha(@background, 0.7);
 }
 
 .widget-mpris .widget-mpris-player .mpris-overlay button:hover {
-	/* The media player buttons (play, pause, next, etc...) */
 	background: var(--noti-bg-hover);
 }
 
 .widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-album-art {
 	border-radius: var(--border-radius);
-	box-shadow: var(--mpris-album-art-shadow);
-	-gtk-icon-size: var(--mpris-album-art-icon-size);
+	box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.75);
+	-gtk-icon-size: 96px;
 }
 
 .widget-mpris .widget-mpris-player .mpris-overlay .widget-mpris-title {
@@ -465,57 +451,25 @@ blankwindow {
 	font-size: 1.1rem;
 }
 
-.widget-mpris .widget-mpris-player .mpris-overlay>box>button {
-	/* Change player control buttons */
-}
-
 .widget-mpris .widget-mpris-player .mpris-overlay>box>button:hover {
-	background-color: var(--mpris-button-hover);
-}
-
-.widget-mpris>box>button {
-	/* Change player side buttons */
-}
-
-.widget-mpris>box>button:disabled {
-	/* Change player side buttons insensitive */
+	background-color: rgba(0, 0, 0, 0.5);
 }
 
 /* Buttons widget */
 .widget-buttons-grid flowboxchild>button {
 	border-radius: var(--border-radius);
+	background: @color0;
+	color: @foreground;
 }
 
 .widget-buttons-grid flowboxchild>button.toggle:checked {
-	/* style given to the active toggle button */
+	/* Uses pywal accent color for the border/active state */
+	background: alpha(@color4, 0.2);
+	border: 2px solid @color4;
+	color: @foreground;
 }
 
 /* Menubar widget */
-.widget-menubar {
-	/* The revealer buttons */
-	/* .AnyName { Name defined in config after #
-    background-color: rgba(var(--noti-bg), 1.0);
-    padding: 8px;
-    margin: 8px;
-    border-radius: 12px;
-  }
-
-  .AnyName>button {
-    background: transparent;
-    border: none;
-  }
-
-  .AnyName>button:hover {
-    background-color: var(--noti-bg-hover);
-  } */
-}
-
-.widget-menubar>.menu-button-bar {
-	/* The left button container */
-	/* The right button container */
-	/* The left and right button container */
-}
-
 .widget-menubar>.menu-button-bar>.start {
 	margin-left: 8px;
 }
@@ -527,6 +481,11 @@ blankwindow {
 .widget-menubar>.menu-button-bar>.widget-menubar-container button {
 	border-radius: var(--border-radius);
 	margin: 0 4px;
+	background: @color0;
+}
+
+.widget-menubar>.menu-button-bar>.widget-menubar-container button:hover {
+	background: @color1;
 }
 
 .widget-menubar>revealer * {
@@ -544,17 +503,12 @@ blankwindow {
 }
 
 /* Volume widget */
-:root {
-	--widget-volume-row-icon-size: 24px;
-}
-
-/* Each row app icon */
 .widget-volume row image {
-	-gtk-icon-size: var(--widget-volume-row-icon-size);
+	-gtk-icon-size: 24px;
 }
 
 .per-app-volume {
-	background-color: var(--noti-bg-alt);
+	background-color: @color0;
 	margin: 8px;
 	margin-bottom: 0;
 	border-radius: var(--border-radius);
@@ -565,7 +519,16 @@ blankwindow {
 	font-size: inherit;
 }
 
-/* Backlight widget */
+scale trough {
+	background: @color0;
+	border-radius: var(--border-radius);
+}
+
+scale highlight {
+	background: @color4;
+	border-radius: var(--border-radius);
+}
+
 /* Inhibitors widget */
 .widget-inhibitors>label {
 	margin-right: 8px;
@@ -575,37 +538,32 @@ blankwindow {
 .widget-inhibitors>button {
 	margin-left: 8px;
 	border-radius: var(--border-radius);
+	background: @color0;
 }
 
-/* === Bigger Nerd Font Icons for Volume & Brightness Labels === */
+.widget-inhibitors>button:hover {
+	background: @color1;
+}
 
-.widget-volume label:first-child,
-.widget-backlight label:first-child {
+/* === Bigger Nerd Font Icons for Volume Labels === */
+.widget-volume label:first-child {
 	font-size: 1.5rem;
-	/* increase or tweak: try 2rem if you want even bigger */
 	line-height: 1.2;
 	margin-right: 10px;
 	color: var(--text-color);
-	/* keeps same color as text */
 }
 
-/* Make sure it aligns nicely with the slider */
-.widget-volume,
-.widget-backlight {
+.widget-volume {
 	padding: 10px 14px;
+	background: @color0;
+	border-radius: var(--border-radius);
+	margin: 4px 8px;
 }
-
 
 /* --- Balance button-grid alignment & spacing --- */
 .widget-buttons-grid flowboxchild>button {
 	border-radius: 25px;
 	transition: background 0.2s ease;
-}
-
-.widget-buttons-grid flowboxchild>button.toggle:checked {
-	/* background: rgba(247, 252, 248, 0.25);  active bluish highlight */
-	/* box-shadow: 0 0 6px rgba(247, 27, 229, 0.5);  */
-	border: 2px solid rgba(153, 193, 253, 0.8);
 }
 
 .widget-buttons-grid flowboxchild>button label {
@@ -615,12 +573,14 @@ blankwindow {
 /* --- FIX: Targeted Padding for Wi-Fi and Hyprsunset Icons --- */
 .widget-buttons-grid flowboxchild:nth-child(1)>button label,
 .widget-buttons-grid flowboxchild:nth-child(3)>button label {
-	/* Apply the padding-right to both selected icons */
 	padding-right: 8px;
 }
 
-/* 2. Targets the Hypridle Button (4th child in the grid) */
 .widget-buttons-grid flowboxchild:nth-child(4)>button label {
-	/* Pushes the icon 3 pixels to the left. Adjust '2px' as needed. */
 	padding-right: 3px;
+}
+
+.widget-menubar>.menu-button-bar>.widget-menubar-container button label {
+	/* Adjust this value to your desired size */
+	font-size: 1.5rem;
 }

@@ -9,8 +9,8 @@
 	"layer-shell-cover-screen": true,
 	"cssPriority": "user",
 	"control-center-margin-top": 0,
-	"control-center-margin-bottom": 450,
-	"control-center-margin-right": 0,
+	"control-center-margin-bottom": 700,
+	"control-center-margin-right": 1,
 	"control-center-margin-left": 0,
 	"notification-2fa-action": true,
 	"notification-inline-replies": false,
@@ -51,15 +51,34 @@
 		}
 	},
 	"widgets": [
-		"dnd",
+		"menubar",
 		"buttons-grid",
 		"volume",
-		"backlight",
 		"inhibitors",
 		"title",
 		"notifications"
 	],
 	"widget-config": {
+		"menubar": {
+			"menu#power": {
+				"label": "󰐥",
+				"position": "right",
+				"actions": [
+					{
+						"label": "󰍃  Logout",
+						"command": "loginctl terminate-user $USER"
+					},
+					{
+						"label": "  Reboot",
+						"command": "systemctl reboot"
+					},
+					{
+						"label": "󰚦  Poweroff",
+						"command": "systemctl poweroff"
+					}
+				]
+			}
+		},
 		"notifications": {
 			"vexpand": true
 		},
@@ -72,9 +91,6 @@
 			"text": "Notifications",
 			"clear-all-button": true,
 			"button-text": "Clear All"
-		},
-		"dnd": {
-			"text": "Do Not Disturb"
 		},
 		"label": {
 			"max-lines": 5,
@@ -90,12 +106,6 @@
 			"label": "󰕾",
 			"show-per-app-icon": true,
 			"show-per-app": true
-		},
-		"backlight": {
-			"label": "󰃠",
-			"device": "intel_backlight",
-			"subsystem": "backlight",
-			"min": 5
 		},
 		"buttons-grid": {
 			"buttons-per-row": 4,
@@ -115,7 +125,7 @@
 					"update-command": "bluetoothctl show | grep -q 'Powered: yes' && echo true || echo false"
 				},
 				{
-					"label": "",
+					"label": "",
 					"type": "toggle",
 					"command": "if [ \"$SWAYNC_TOGGLE_STATE\" = \"true\" ]; then hyprctl dispatch exec 'hyprsunset --temperature 6000'; else pkill -INT hyprsunset; fi",
 					"update-command": "pgrep -x hyprsunset >/dev/null && echo true || echo false"
@@ -125,6 +135,18 @@
 					"type": "toggle",
 					"command": "if [ \"$SWAYNC_TOGGLE_STATE\" = \"true\" ]; then hyprctl dispatch exec hypridle; else pkill -TERM hypridle; fi",
 					"update-command": "pgrep -x hypridle >/dev/null && echo true || echo false"
+				},
+				{
+					"label": "",
+					"type": "toggle",
+					"command": "swaync-client -d",
+					"update-command": "swaync-client -s | grep -q 'dnd: true' && echo true || echo false"
+				},
+				{
+					"label": "🎤",
+					"type": "toggle",
+					"command": "wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle",
+					"update-command": "wpctl get-volume @DEFAULT_AUDIO_SOURCE@ | grep -q MUTED && echo true || echo false"
 				}
 			]
 		}
