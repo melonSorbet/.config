@@ -2,9 +2,10 @@
 
 DIR="$HOME/.config/hypr/wallpapers"
 STATE="$HOME/.cache/hyprpaper_index"
-MONITOR=hyprctl monitors -j | jq -r ''
+MONITOR=$(hyprctl monitors -j | jq -r '.[].name')
 HYPRCONF="$HOME/.config/hypr/hyprland.conf"
 
+echo "$MONITOR"
 # Build an array of image files
 mapfile -t WALLS < <(ls "$DIR"/*.{jpg,jpeg,png} 2>/dev/null)
 
