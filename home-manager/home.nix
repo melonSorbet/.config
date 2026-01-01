@@ -106,7 +106,7 @@ in
     enable = true;
     settings = {
       general.import = [
-        "~/.cache/wal/colors-alacritty.toml"
+        "~/.cache/wal/colors-alacritty-mine.toml"
       ];
 
       scrolling.history = 10000; # increase buffer
