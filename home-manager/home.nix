@@ -123,6 +123,7 @@ in
         family = "JetbrainsMono NerdFont";
 
       };
+      font.size = 16;
       terminal.shell = {
         program = "${pkgs.zsh}/bin/zsh";
         args = [ "--login" ];
