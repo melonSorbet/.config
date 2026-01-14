@@ -66,6 +66,11 @@ in
       # Language Servers
       nixd
       nixfmt
+      zsh-autosuggestions
+      zsh-syntax-highlighting
+      oh-my-zsh
+      zsh
+      hyprmon
     ]
     ++ (with unfreepkgs; [
       obsidian
@@ -79,29 +84,6 @@ in
     enable = true;
     enableZshIntegration = true;
   };
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    shellAliases = {
-      ll = "ls -l";
-      update = "sudo dnf update && home-manager switch";
-      editconfig = "nvim /home/user/.config/home-manager/home.nix";
-      nvim = "${pkgs.neovim-unwrapped}/bin/nvim";
-    };
-
-    oh-my-zsh = {
-      enable = true;
-      theme = "agnoster";
-      plugins = [ "git" ];
-    };
-
-    history.size = 10000;
-  };
-
   programs.alacritty = {
     enable = true;
     settings = {
