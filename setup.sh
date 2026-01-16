@@ -1,5 +1,5 @@
 #!/bin/bash
-cat > .zshrc << "EOF"
+cat > ../.zshrc << "EOF"
 # Enable completion
 autoload -Uz compinit
 compinit
